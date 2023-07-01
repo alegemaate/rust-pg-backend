@@ -3,10 +3,20 @@ use diesel::prelude::*;
 
 pub type DbError = Box<dyn std::error::Error + Send + Sync>;
 
-pub fn find_all(conn: &mut PgConnection) -> Result<Vec<Product>, DbError> {
-  use crate::schema::products::dsl::*;
+pub fn find_all(filters: ProductQuery, conn: &mut PgConnection) -> Result<Vec<Product>, DbError> {
+  use crate::schema::products::dsl;
 
-  let response = products.load::<Product>(conn)?;
+  let mut query = dsl::products.into_boxed();
+
+  if filters.name.is_some() {
+    query = query.filter(dsl::name.eq(filters.name));
+  }
+
+  if filters.product_type.is_some() {
+    query = query.filter(dsl::product_type.eq(filters.product_type));
+  }
+
+  let response = query.load(conn)?;
 
   return Ok(response);
 }
