@@ -10,7 +10,7 @@ pub fn find_all(product_id: i32, conn: &mut PgConnection) -> Result<Vec<Part>, D
     .filter(dsl::product_id.eq(product_id))
     .load(conn)?;
 
-  return Ok(response);
+  Ok(response)
 }
 
 pub fn find_by_id(
@@ -26,7 +26,7 @@ pub fn find_by_id(
     .first(conn)
     .optional()?;
 
-  return Ok(response);
+  Ok(response)
 }
 
 pub fn create(
@@ -47,7 +47,7 @@ pub fn create(
     .returning(Part::as_returning())
     .get_result(conn)?;
 
-  return Ok(response);
+  Ok(response)
 }
 
 pub fn delete(product_id: i32, id: i32, conn: &mut PgConnection) -> Result<usize, DbError> {
@@ -60,5 +60,5 @@ pub fn delete(product_id: i32, id: i32, conn: &mut PgConnection) -> Result<usize
   )
   .execute(conn)?;
 
-  return Ok(response);
+  Ok(response)
 }

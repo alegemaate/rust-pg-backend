@@ -33,7 +33,7 @@ pub async fn get_product_detail(_id: web::Path<String>) -> Result<HttpResponse, 
   let product_id = _id
     .parse::<i32>()
     .map_err(|e| HttpException::BadRequestException {
-      message: String::from(e.to_string()),
+      message: e.to_string(),
     })?;
 
   let conn = &mut establish_connection();
@@ -53,7 +53,7 @@ pub async fn remove_product(_id: web::Path<String>) -> Result<HttpResponse, Erro
   let product_id = _id
     .parse::<i32>()
     .map_err(|e| HttpException::BadRequestException {
-      message: String::from(e.to_string()),
+      message: e.to_string(),
     })?;
 
   let conn = &mut establish_connection();

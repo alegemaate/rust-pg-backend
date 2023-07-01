@@ -5,22 +5,22 @@ use crate::{
   http_exception::HttpException,
 };
 
-pub async fn default_not_found() -> Result<HttpResponse, Error> {
-  return Err(
+async fn default_not_found() -> Result<HttpResponse, Error> {
+  Err(
     HttpException::NotFoundException {
       message: String::from("Not Found"),
     }
     .into(),
-  );
+  )
 }
 
-pub async fn default_method_not_allowed() -> Result<HttpResponse, Error> {
-  return Err(
+async fn default_method_not_allowed() -> Result<HttpResponse, Error> {
+  Err(
     HttpException::MethodNotAllowedException {
       message: String::from("Method Not Allowed"),
     }
     .into(),
-  );
+  )
 }
 
 pub fn config_app(cfg: &mut web::ServiceConfig) {

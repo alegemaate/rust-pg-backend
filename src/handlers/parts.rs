@@ -8,7 +8,7 @@ pub async fn get_parts(product_id: web::Path<String>) -> Result<HttpResponse, Er
     product_id
       .parse::<i32>()
       .map_err(|e| HttpException::BadRequestException {
-        message: String::from(e.to_string()),
+        message: e.to_string(),
       })?;
 
   let conn = &mut establish_connection();
@@ -29,7 +29,7 @@ pub async fn add_part(
     product_id
       .parse::<i32>()
       .map_err(|e| HttpException::BadRequestException {
-        message: String::from(e.to_string()),
+        message: e.to_string(),
       })?;
 
   let conn = &mut establish_connection();
@@ -49,14 +49,14 @@ pub async fn get_part_detail(path: web::Path<(String, String)>) -> Result<HttpRe
   let part_id = _id
     .parse::<i32>()
     .map_err(|e| HttpException::BadRequestException {
-      message: String::from(e.to_string()),
+      message: e.to_string(),
     })?;
 
   let part_product_id =
     _product_id
       .parse::<i32>()
       .map_err(|e| HttpException::BadRequestException {
-        message: String::from(e.to_string()),
+        message: e.to_string(),
       })?;
 
   let conn = &mut establish_connection();
@@ -78,14 +78,14 @@ pub async fn remove_part(path: web::Path<(String, String)>) -> Result<HttpRespon
   let part_id = _id
     .parse::<i32>()
     .map_err(|e| HttpException::BadRequestException {
-      message: String::from(e.to_string()),
+      message: e.to_string(),
     })?;
 
   let part_product_id =
     _product_id
       .parse::<i32>()
       .map_err(|e| HttpException::BadRequestException {
-        message: String::from(e.to_string()),
+        message: e.to_string(),
       })?;
 
   let conn = &mut establish_connection();

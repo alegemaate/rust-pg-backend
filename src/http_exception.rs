@@ -48,7 +48,7 @@ impl error::ResponseError for HttpException {
   }
 
   fn status_code(&self) -> StatusCode {
-    return self.error_code();
+    self.error_code()
   }
 }
 
