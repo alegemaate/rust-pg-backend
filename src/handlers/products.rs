@@ -9,11 +9,8 @@ use crate::{db::establish_connection, http_exception::HttpException};
 pub async fn get_products(query: web::Query<ProductQuery>) -> Result<HttpResponse, Error> {
   let conn = &mut establish_connection();
 
-  let results = ops::product::find_all(query.into_inner(), conn).map_err(|_| {
-    HttpException::InternalServerError {
-      message: String::from("Db error"),
-    }
-  })?;
+  let results = ops::product::find_all(query.into_inner(), conn)
+    .map_err(|_| HttpException::InternalServerError(String::from("Db error")))?;
 
   Ok(HttpResponse::Ok().json(results))
 }
@@ -21,10 +18,8 @@ pub async fn get_products(query: web::Query<ProductQuery>) -> Result<HttpRespons
 pub async fn add_product(_new_product: web::Json<CreateProductDto>) -> Result<HttpResponse, Error> {
   let conn = &mut establish_connection();
 
-  let result =
-    ops::product::create(&_new_product, conn).map_err(|_| HttpException::InternalServerError {
-      message: String::from("Db error"),
-    })?;
+  let result = ops::product::create(&_new_product, conn)
+    .map_err(|_| HttpException::InternalServerError(String::from("Db error")))?;
 
   Ok(HttpResponse::Ok().json(result))
 }
@@ -32,19 +27,13 @@ pub async fn add_product(_new_product: web::Json<CreateProductDto>) -> Result<Ht
 pub async fn get_product_detail(_id: web::Path<String>) -> Result<HttpResponse, Error> {
   let product_id = _id
     .parse::<i32>()
-    .map_err(|e| HttpException::BadRequestException {
-      message: e.to_string(),
-    })?;
+    .map_err(|e| HttpException::BadRequestException(e.to_string()))?;
 
   let conn = &mut establish_connection();
 
   let result = ops::product::find_by_id(product_id, conn)
-    .map_err(|_| HttpException::InternalServerError {
-      message: String::from("Db error"),
-    })?
-    .ok_or_else(|| HttpException::NotFoundException {
-      message: String::from("Product Not Found"),
-    })?;
+    .map_err(|_| HttpException::InternalServerError(String::from("Db error")))?
+    .ok_or_else(|| HttpException::NotFoundException(String::from("Product Not Found")))?;
 
   Ok(HttpResponse::Ok().json(result))
 }
@@ -52,16 +41,12 @@ pub async fn get_product_detail(_id: web::Path<String>) -> Result<HttpResponse, 
 pub async fn remove_product(_id: web::Path<String>) -> Result<HttpResponse, Error> {
   let product_id = _id
     .parse::<i32>()
-    .map_err(|e| HttpException::BadRequestException {
-      message: e.to_string(),
-    })?;
+    .map_err(|e| HttpException::BadRequestException(e.to_string()))?;
 
   let conn = &mut establish_connection();
 
-  let result =
-    ops::product::delete(product_id, conn).map_err(|_| HttpException::InternalServerError {
-      message: String::from("Db error"),
-    })?;
+  let result = ops::product::delete(product_id, conn)
+    .map_err(|_| HttpException::InternalServerError(String::from("Db error")))?;
 
   Ok(HttpResponse::Ok().json(result))
 }

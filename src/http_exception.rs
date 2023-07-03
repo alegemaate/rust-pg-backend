@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 
 use actix_web::{error, http::StatusCode, HttpResponse};
-use derive_more::{Display, Error};
+use derive_more::Display;
 use serde::{Deserialize, Serialize};
 
 pub trait ErrorAttributes {
@@ -9,22 +9,22 @@ pub trait ErrorAttributes {
   fn error_code(&self) -> StatusCode;
 }
 
-#[derive(Display, Error, Debug)]
+#[derive(Display, Debug)]
 pub enum HttpException {
-  #[display(fmt = "{}", message)]
-  BadRequestException { message: String },
-  #[display(fmt = "{}", message)]
-  UnauthorizedException { message: String },
-  #[display(fmt = "{}", message)]
-  ForbiddenException { message: String },
-  #[display(fmt = "{}", message)]
-  NotFoundException { message: String },
-  #[display(fmt = "{}", message)]
-  MethodNotAllowedException { message: String },
-  #[display(fmt = "{}", message)]
-  InternalServerError { message: String },
-  #[display(fmt = "{}", message)]
-  NotImplemented { message: String },
+  #[display(fmt = "{}", _0)]
+  BadRequestException(String),
+  #[display(fmt = "{}", _0)]
+  UnauthorizedException(String),
+  #[display(fmt = "{}", _0)]
+  ForbiddenException(String),
+  #[display(fmt = "{}", _0)]
+  NotFoundException(String),
+  #[display(fmt = "{}", _0)]
+  MethodNotAllowedException(String),
+  #[display(fmt = "{}", _0)]
+  InternalServerError(String),
+  #[display(fmt = "{}", _0)]
+  NotImplemented(String),
 }
 
 #[derive(Deserialize, Serialize)]
